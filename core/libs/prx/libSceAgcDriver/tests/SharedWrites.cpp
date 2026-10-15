@@ -63,7 +63,7 @@ void benchmark(bool labels = false, bool backing = true) {
         std::vector<double> times;
         std::uint64_t faults = 0;
         for (unsigned pass = 0; pass < 10; ++pass) {
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__APPLE__)
             rusage before{}, after{};
             getrusage(RUSAGE_THREAD, &before);
 #endif
@@ -77,7 +77,7 @@ void benchmark(bool labels = false, bool backing = true) {
                 } else Write(mapping.Address(), std::span(source).first(bytes), 1);
             }
             const auto us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - start).count() / 256;
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__APPLE__)
             getrusage(RUSAGE_THREAD, &after);
             if (pass != 0) faults += after.ru_minflt - before.ru_minflt;
 #endif
@@ -191,7 +191,7 @@ template<class TAction> void fails(TAction&& fn) {
     require(failed, "invalid write was accepted");
 }
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__APPLE__)
 std::size_t directMappings() {
     std::ifstream maps("/proc/self/maps");
     require(maps.is_open(), "cannot inspect mapping lifetimes");
@@ -287,12 +287,12 @@ int main(int argc, char** argv) {
         else if (argc == 2 && std::string_view(argv[1]) == "--benchmark-fallback") benchmark(false, false);
         else if (argc == 2 && std::string_view(argv[1]) == "--benchmark-labels-fallback") benchmark(true, false);
         else {
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__APPLE__)
             const auto before = directMappings();
 #endif
             run();
             smallStores();
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__APPLE__)
             require(directMappings() == before, "physical backing write views leaked");
 #endif
             std::cout << "Shared backing write tests passed\n";
