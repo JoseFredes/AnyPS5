@@ -125,7 +125,13 @@ public:
         const auto next = _used.lower_bound(start);
         if ((next != _used.end() && next->first < start + bytes) || (next != _used.begin() && std::prev(next)->second > start)) {
             char message[160];
-            std::snprintf(message, sizeof(message), "fixed guest mapping 0x%llx+0x%zx overlaps %s", static_cast<unsigned long long>(start), bytes, OverlapsHostRegion(start, bytes) ? "a host region in the guest arena" : "a guest arena range");
+            std::uintptr_t hostStart = 0, hostEnd = 0;
+            for (const auto& [regionStart, regionEnd] : _hostRegions)
+                if (regionStart < start + bytes && start < regionEnd) { hostStart = regionStart; hostEnd = regionEnd; break; }
+            if (hostEnd != 0)
+                std::snprintf(message, sizeof(message), "fixed guest mapping 0x%llx+0x%zx overlaps a host region in the guest arena at 0x%llx-0x%llx", static_cast<unsigned long long>(start), bytes, static_cast<unsigned long long>(hostStart), static_cast<unsigned long long>(hostEnd));
+            else
+                std::snprintf(message, sizeof(message), "fixed guest mapping 0x%llx+0x%zx overlaps a guest arena range", static_cast<unsigned long long>(start), bytes);
             throw std::runtime_error(message);
         }
         _used.emplace(start, start + bytes);
@@ -451,6 +457,10 @@ void* PlaceAt(void* pointer, std::size_t bytes, std::uint32_t protection) {
 #endif
 
 #if defined(__linux__) || defined(__APPLE__)
+bool GuestArenaHostRegionOverlaps_nid_postfix(std::uintptr_t address, std::size_t bytes) {
+    return Arena::Get().OverlapsHostRegion(address, bytes);
+}
+
 void GuestArenaSetProtection_nid_postfix(std::uintptr_t address, std::size_t bytes, std::uint32_t protection) {
     if (!Arena::Get().Contains(reinterpret_cast<void*>(address), bytes)) throw OutsideArena("set protection", reinterpret_cast<void*>(address), bytes);
     if (mprotect(reinterpret_cast<void*>(address), bytes, PosixProtection(protection)) != 0)

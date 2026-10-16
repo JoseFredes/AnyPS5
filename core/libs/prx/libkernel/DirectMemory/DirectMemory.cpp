@@ -625,6 +625,13 @@ bool RemapFixedIntoRegistered(GuestAllocations::Mutation& mutation, void* addr, 
 #if defined(__linux__) || defined(__APPLE__)
 bool ArenaAvailable() { return GuestArena::GuestArenaAvailable_nid_postfix(); }
 
+#ifdef __APPLE__
+bool RelocateBlockedFixed() {
+    static const bool enabled = std::getenv("APS5_RELOCATE_BLOCKED_FIXED") != nullptr;
+    return enabled;
+}
+#endif
+
 void* ArenaCommit(void* addr, size_t len, int prot) {
     return mmap(addr, len, prot, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
 }
@@ -690,6 +697,18 @@ void* MapPlaced(void* addr, size_t len, int prot, int flags, size_t alignment) {
 #if defined(__linux__) || defined(__APPLE__)
         if (ArenaAvailable() && !GuestArena::GuestArenaContains_nid_postfix(addr, len))
             throw std::invalid_argument("fixed mapping is outside the guest address space arena");
+#ifdef __APPLE__
+        if (ArenaAvailable() && RelocateBlockedFixed() &&
+            GuestArena::GuestArenaHostRegionOverlaps_nid_postfix(reinterpret_cast<std::uintptr_t>(addr), len)) {
+            void* placed = GuestArena::GuestArenaAllocateAtOrAbove_nid_postfix(reinterpret_cast<std::uintptr_t>(addr), len, alignment);
+            if (void* committed = ArenaCommit(placed, len, prot); committed != MAP_FAILED) {
+                Trace("relocated blocked fixed mapping %p+0x%zx to %p", addr, len, committed);
+                return committed;
+            }
+            ArenaForget(placed, len);
+            throw std::system_error(errno, std::generic_category(), "Arena mapping failed");
+        }
+#endif
         if (ArenaAvailable()) {
             GuestArena::GuestArenaMarkUsed_nid_postfix(addr, len);
             if (void* placed = ArenaCommit(addr, len, prot); placed != MAP_FAILED) return placed;
