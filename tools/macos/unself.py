@@ -7,7 +7,7 @@ Exit 0 = written, 1 = not a SELF / encrypted / malformed.
 import struct
 import sys
 
-SELF_MAGIC = b"\x4f\x15\x3d\x1d"
+SELF_MAGICS = (b"\x4f\x15\x3d\x1d", b"\x54\x14\xf5\xee")
 ENTRY_FMT = "<QQQQ"   # props, offset, fileSize, memSize
 PHDR_FMT = "<IIQQQQQQ"  # type, flags, offset, vaddr, paddr, filesz, memsz, align
 SEGMENT_HAS_BLOCKS = 0x800
@@ -19,7 +19,7 @@ def unwrap(src_path: str, dst_path: str) -> str:
         head = src.read(0x20)
         if head[:4] == b"\x7fELF":
             return "already ELF"
-        if head[:4] != SELF_MAGIC:
+        if head[:4] not in SELF_MAGICS:
             raise ValueError("not a SELF container")
         entry_count = struct.unpack_from("<H", head, 0x18)[0]
         if not 0 < entry_count < 4096:
