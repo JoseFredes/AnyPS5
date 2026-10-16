@@ -158,9 +158,11 @@ if(BUILD_TESTING)
     add_library(guest_module_fixture SHARED ${LIBS_INCLUDE_DIR}/tests/GuestModuleFixture.cpp)
     target_include_directories(guest_module_fixture PRIVATE ${LIBS_INCLUDE_DIR})
     add_custom_command(TARGET guest_module_fixture POST_BUILD
-        COMMAND $<TARGET_FILE:nid_patcher> guest_module_fixture $<TARGET_FILE:guest_module_fixture>
+        COMMAND ${ANYPS5_NID_PATCHER_COMMAND} guest_module_fixture $<TARGET_FILE:guest_module_fixture>
         VERBATIM)
-    add_dependencies(guest_module_fixture nid_patcher)
+    if(ANYPS5_NID_PATCHER_DEPENDS)
+        add_dependencies(guest_module_fixture ${ANYPS5_NID_PATCHER_DEPENDS})
+    endif()
     configure_windows_unwind(guest_module_fixture)
     set_target_properties(guest_module_fixture PROPERTIES BUILD_WITH_INSTALL_RPATH ON INSTALL_RPATH "${ANYPS5_LIBS_RPATH}")
     find_package(Python3 QUIET COMPONENTS Interpreter)

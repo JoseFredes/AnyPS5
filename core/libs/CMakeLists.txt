@@ -91,8 +91,8 @@ set(LIBC_PATCHED ${PATCHED_DIR}/libc.prx)
 add_custom_command(
         OUTPUT ${LIBC_PATCHED}
         COMMAND ${CMAKE_COMMAND} -E copy ${LIBC_UNPATCHED} ${LIBC_PATCHED}
-        COMMAND $<TARGET_FILE:nid_patcher> libc ${LIBC_PATCHED}
-        DEPENDS nid_patcher libc ${LIBC_UNPATCHED}
+        COMMAND ${ANYPS5_NID_PATCHER_COMMAND} libc ${LIBC_PATCHED}
+        DEPENDS ${ANYPS5_NID_PATCHER_DEPENDS} libc ${LIBC_UNPATCHED}
         COMMENT "Patching NIDs for libc"
 )
 
@@ -146,8 +146,8 @@ foreach(LIB_DIR ${LIBS_DIRS})
         add_custom_command(
                 OUTPUT ${PATCHED_FILE}
                 COMMAND ${CMAKE_COMMAND} -E copy ${UNPATCHED_FILE} ${PATCHED_FILE}
-                COMMAND $<TARGET_FILE:nid_patcher> ${LIB_NAME} --preserve-exports "${LIBC_UNPATCHED}" "${PATCHED_FILE}"
-                DEPENDS nid_patcher ${LIB_NAME} ${UNPATCHED_FILE} ${LIBC_UNPATCHED}
+                COMMAND ${ANYPS5_NID_PATCHER_COMMAND} ${LIB_NAME} --preserve-exports "${LIBC_UNPATCHED}" "${PATCHED_FILE}"
+                DEPENDS ${ANYPS5_NID_PATCHER_DEPENDS} ${LIB_NAME} ${UNPATCHED_FILE} ${LIBC_UNPATCHED}
                 COMMENT "Patching NIDs for ${LIB_NAME}"
         )
 

@@ -39,10 +39,10 @@ set(agcTextureDetileShaderHeader ${agcTextureDetileGeneratedDir}/TextureDetile_s
 add_custom_command(
         OUTPUT "${agcTextureDetileShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTextureDetileGeneratedDir}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcTextureDetileShaderSpv}" "${agcTextureDetileShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcTextureDetileShaderSpv}" "${agcTextureDetileShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcTextureDetileShaderSpv} -DOUTPUT=${agcTextureDetileShaderHeader}
         -DSYMBOL=TEXTURE_DETILE_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcTextureDetileShaderSource}" glslang-standalone
+        DEPENDS "${agcTextureDetileShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 set(agcTextureDetileImageShaderSpv ${agcTextureDetileGeneratedDir}/TextureDetileImage.spv)
@@ -50,10 +50,10 @@ set(agcTextureDetileImageShaderHeader ${agcTextureDetileGeneratedDir}/TextureDet
 add_custom_command(
         OUTPUT "${agcTextureDetileImageShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTextureDetileGeneratedDir}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -DLINEAR_IMAGE=1 -o "${agcTextureDetileImageShaderSpv}" "${agcTextureDetileShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -DLINEAR_IMAGE=1 -o "${agcTextureDetileImageShaderSpv}" "${agcTextureDetileShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcTextureDetileImageShaderSpv} -DOUTPUT=${agcTextureDetileImageShaderHeader}
         -DSYMBOL=TEXTURE_DETILE_IMAGE_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcTextureDetileShaderSource}" glslang-standalone
+        DEPENDS "${agcTextureDetileShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -63,10 +63,10 @@ set(agcMeshArgumentsShaderHeader ${agcTextureDetileGeneratedDir}/MeshArguments_s
 add_custom_command(
         OUTPUT "${agcMeshArgumentsShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTextureDetileGeneratedDir}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcMeshArgumentsShaderSpv}" "${agcMeshArgumentsShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcMeshArgumentsShaderSpv}" "${agcMeshArgumentsShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcMeshArgumentsShaderSpv} -DOUTPUT=${agcMeshArgumentsShaderHeader}
         -DSYMBOL=MESH_ARGUMENTS_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcMeshArgumentsShaderSource}" glslang-standalone
+        DEPENDS "${agcMeshArgumentsShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -76,10 +76,10 @@ set(agcCmaskClearShaderHeader ${agcTextureDetileGeneratedDir}/CmaskClear_spv.h)
 add_custom_command(
         OUTPUT "${agcCmaskClearShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTextureDetileGeneratedDir}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcCmaskClearShaderSpv}" "${agcCmaskClearShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcCmaskClearShaderSpv}" "${agcCmaskClearShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcCmaskClearShaderSpv} -DOUTPUT=${agcCmaskClearShaderHeader}
         -DSYMBOL=CMASK_CLEAR_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcCmaskClearShaderSource}" glslang-standalone
+        DEPENDS "${agcCmaskClearShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -89,10 +89,10 @@ set(agcSampleCounterShaderHeader ${agcTextureDetileGeneratedDir}/SampleCounter_s
 add_custom_command(
         OUTPUT "${agcSampleCounterShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTextureDetileGeneratedDir}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcSampleCounterShaderSpv}" "${agcSampleCounterShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcSampleCounterShaderSpv}" "${agcSampleCounterShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcSampleCounterShaderSpv} -DOUTPUT=${agcSampleCounterShaderHeader}
         -DSYMBOL=SAMPLE_COUNTER_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcSampleCounterShaderSource}" glslang-standalone
+        DEPENDS "${agcSampleCounterShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -102,10 +102,10 @@ set(agcSampleDumpsShaderHeader ${agcTextureDetileGeneratedDir}/SampleDumps_spv.h
 add_custom_command(
         OUTPUT "${agcSampleDumpsShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTextureDetileGeneratedDir}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcSampleDumpsShaderSpv}" "${agcSampleDumpsShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcSampleDumpsShaderSpv}" "${agcSampleDumpsShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcSampleDumpsShaderSpv} -DOUTPUT=${agcSampleDumpsShaderHeader}
         -DSYMBOL=SAMPLE_DUMPS_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcSampleDumpsShaderSource}" glslang-standalone
+        DEPENDS "${agcSampleDumpsShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -794,10 +794,10 @@ set(agcSampleLodShaderHeader ${agcTestShaderGeneratedRoot}/SampleLod_spv.h)
 add_custom_command(
         OUTPUT "${agcSampleLodShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcSampleLodShaderSpv}" "${agcSampleLodShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcSampleLodShaderSpv}" "${agcSampleLodShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcSampleLodShaderSpv} -DOUTPUT=${agcSampleLodShaderHeader}
         -DSYMBOL=SAMPLE_LOD_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcSampleLodShaderSource}" glslang-standalone
+        DEPENDS "${agcSampleLodShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -807,10 +807,10 @@ set(agcSampleArrayShaderHeader ${agcTestShaderGeneratedRoot}/SampleArray_spv.h)
 add_custom_command(
         OUTPUT "${agcSampleArrayShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcSampleArrayShaderSpv}" "${agcSampleArrayShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcSampleArrayShaderSpv}" "${agcSampleArrayShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcSampleArrayShaderSpv} -DOUTPUT=${agcSampleArrayShaderHeader}
         -DSYMBOL=SAMPLE_ARRAY_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcSampleArrayShaderSource}" glslang-standalone
+        DEPENDS "${agcSampleArrayShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -821,10 +821,10 @@ foreach(agcTriangleStage IN ITEMS vert frag)
     add_custom_command(
             OUTPUT "${agcTriangleHeader}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-            COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcTriangleSpv}" "${agcTriangleSource}"
+            COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcTriangleSpv}" "${agcTriangleSource}"
             COMMAND ${CMAKE_COMMAND} -DINPUT=${agcTriangleSpv} -DOUTPUT=${agcTriangleHeader}
             -DSYMBOL=TRIANGLE_${agcTriangleStage}_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-            DEPENDS "${agcTriangleSource}" glslang-standalone
+            DEPENDS "${agcTriangleSource}" ${ANYPS5_GLSLANG_DEPENDS}
             VERBATIM
     )
     list(APPEND agcTriangleHeaders "${agcTriangleHeader}")
@@ -837,10 +837,10 @@ foreach(agcCoverStage IN ITEMS vert frag)
     add_custom_command(
             OUTPUT "${agcCoverShaderHeader}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-            COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcCoverShaderSpv}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/Cover.${agcCoverStage}"
+            COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcCoverShaderSpv}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/Cover.${agcCoverStage}"
             COMMAND ${CMAKE_COMMAND} -DINPUT=${agcCoverShaderSpv} -DOUTPUT=${agcCoverShaderHeader}
             -DSYMBOL=COVER_${agcCoverSymbol}_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/Cover.${agcCoverStage}" glslang-standalone
+            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/Cover.${agcCoverStage}" ${ANYPS5_GLSLANG_DEPENDS}
             VERBATIM
     )
     list(APPEND agcCoverShaderHeaders ${agcCoverShaderHeader})
@@ -873,10 +873,10 @@ set(agcBufferUpdateHeader ${agcTestShaderGeneratedRoot}/BufferUpdate_spv.h)
 add_custom_command(
         OUTPUT "${agcBufferUpdateHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcBufferUpdateSpv}" "${agcBufferUpdateSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcBufferUpdateSpv}" "${agcBufferUpdateSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcBufferUpdateSpv} -DOUTPUT=${agcBufferUpdateHeader}
         -DSYMBOL=BUFFER_UPDATE_SPV -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcBufferUpdateSource}" glslang-standalone
+        DEPENDS "${agcBufferUpdateSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
 )
 
@@ -1076,10 +1076,10 @@ foreach(agcVertexRangeShader IN ITEMS VertexRange.vert VertexRangeProducer.frag)
     add_custom_command(
             OUTPUT "${agcVertexRangeHeader}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-            COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcVertexRangeSpv}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/${agcVertexRangeShader}"
+            COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcVertexRangeSpv}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/${agcVertexRangeShader}"
             COMMAND ${CMAKE_COMMAND} -DINPUT=${agcVertexRangeSpv} -DOUTPUT=${agcVertexRangeHeader}
             -DSYMBOL=${agcVertexRangeSymbol} -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/${agcVertexRangeShader}" glslang-standalone
+            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders/${agcVertexRangeShader}" ${ANYPS5_GLSLANG_DEPENDS}
             VERBATIM
     )
     list(APPEND agcVertexRangeHeaders ${agcVertexRangeHeader})
@@ -1173,10 +1173,10 @@ foreach(stage IN ITEMS vert frag)
     add_custom_command(
         OUTPUT "${agcProvokingShaderHeader}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${agcTestShaderGeneratedRoot}"
-        COMMAND "$<TARGET_FILE:glslang-standalone>" -V --target-env vulkan1.1 -o "${agcProvokingShaderSpv}" "${agcProvokingShaderSource}"
+        COMMAND "${ANYPS5_GLSLANG_COMMAND}" -V --target-env vulkan1.1 -o "${agcProvokingShaderSpv}" "${agcProvokingShaderSource}"
         COMMAND ${CMAKE_COMMAND} -DINPUT=${agcProvokingShaderSpv} -DOUTPUT=${agcProvokingShaderHeader}
         -DSYMBOL=${agcProvokingShaderSymbol} -P "${CMAKE_CURRENT_SOURCE_DIR}/embed_spirv.cmake"
-        DEPENDS "${agcProvokingShaderSource}" glslang-standalone
+        DEPENDS "${agcProvokingShaderSource}" ${ANYPS5_GLSLANG_DEPENDS}
         VERBATIM
     )
     target_sources(agc_driver_provoking_vertex_tests PRIVATE ${agcProvokingShaderHeader})
@@ -1463,7 +1463,7 @@ if(AGC_BUILD_VISUAL_TEST)
         add_custom_command(
                 OUTPUT "${shaderOutput}"
                 COMMAND ${CMAKE_COMMAND} -E make_directory "${ANYPS5_TEST_OUTPUT_DIRECTORY}"
-                COMMAND "$<TARGET_FILE:glslang-standalone>"
+                COMMAND "${ANYPS5_GLSLANG_COMMAND}"
                 -V
                 --target-env vulkan1.1
                 -o "${shaderOutput}"
